@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../design_system/design_system.dart';
-import '../models/program.dart';
-import '../routes/app_routes.dart';
+import '../../design_system/design_system.dart';
+import '../../models/program.dart';
+import '../../routes/app_routes.dart';
+import '../../services/program_repository.dart';
 import 'program_listing_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -143,7 +144,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // Popular Programs
+              // Popular Programs Header (Step 6)
               ExSectionHeader(
                 title: 'Popular Programs',
                 trailingText: 'See all →',
@@ -152,28 +153,74 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 16),
-              _buildPopularProgramCard(
-                context,
-                program: ProgramListingScreen.programs[2],
-                rating: '4.9',
-                learners: '12k',
-                placeholderColor: Colors.orange.shade200,
-              ),
-              const SizedBox(height: 16),
-              _buildPopularProgramCard(
-                context,
-                program: ProgramListingScreen.programs[3],
-                rating: '4.8',
-                learners: '8.5k',
-                placeholderColor: Colors.blue.shade200,
-              ),
-              const SizedBox(height: 16),
-              _buildPopularProgramCard(
-                context,
-                program: ProgramListingScreen.programs[4],
-                rating: '4.9',
-                learners: '4.2k',
-                placeholderColor: Colors.pink.shade100,
+
+              // ---------------- FutureBuilder JSON Integration (Steps 4 & 5) ----------------
+              FutureBuilder<List<Program>>(
+                future: ProgramRepository().loadPrograms(),
+                builder: (context, snapshot) {
+                  // State 1: Waiting / Loading State
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+
+                  // State 2: Error State
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24.0),
+                        child: Text(
+                          'Unable to load programs. Please try again.',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    );
+                  }
+
+                  // State 3: Loaded State (Render List from JSON)
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    final programs = snapshot.data!;
+
+                    // Colors for card image placeholders
+                    final colors = [
+                      Colors.orange.shade200,
+                      Colors.blue.shade200,
+                      Colors.pink.shade100,
+                      Colors.purple.shade100,
+                    ];
+
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: programs.length,
+                      separatorBuilder: (context, index) => const SizedBox(height: 16),
+                      itemBuilder: (context, index) {
+                        final program = programs[index];
+                        final placeholderColor = colors[index % colors.length];
+
+                        return _buildPopularProgramCard(
+                          context,
+                          program: program,
+                          rating: '4.8',
+                          learners: '10k',
+                          placeholderColor: placeholderColor,
+                        );
+                      },
+                    );
+                  }
+
+                  // Fallback when empty
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24.0),
+                      child: Text('No programs found.'),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -198,68 +245,68 @@ class HomeScreen extends StatelessWidget {
       },
       child: Container(
         width: 280,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CircleAvatar(
-                backgroundColor: colorScheme.secondaryContainer,
-                child: Icon(icon, color: colorScheme.onSecondaryContainer),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: colorScheme.outlineVariant),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainer,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                  backgroundColor: colorScheme.secondaryContainer,
+                  child: Icon(icon, color: colorScheme.onSecondaryContainer),
                 ),
-                child: Text(
-                  progressText,
-                  style: textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.onSurfaceVariant,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: colorScheme.outlineVariant),
+                  ),
+                  child: Text(
+                    progressText,
+                    style: textTheme.labelSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
+              ],
+            ),
+            const Spacer(),
+            Text(
+              program.title,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
               ),
-            ],
-          ),
-          const Spacer(),
-          Text(
-            program.title,
-            style: textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSurface,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            program.description,
-            style: textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
+            const SizedBox(height: 8),
+            Text(
+              program.description,
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 16),
-          LinearProgressIndicator(
-            value: progress,
-            backgroundColor: colorScheme.surfaceContainerHighest,
-            color: colorScheme.primary,
-            minHeight: 6,
-            borderRadius: BorderRadius.circular(3),
-          ),
-        ],
+            const SizedBox(height: 16),
+            LinearProgressIndicator(
+              value: progress,
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              color: colorScheme.primary,
+              minHeight: 6,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -279,62 +326,62 @@ class HomeScreen extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: placeholderColor,
-              borderRadius: BorderRadius.circular(12),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: placeholderColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.image_outlined, color: Colors.black26, size: 32),
             ),
-            child: const Icon(Icons.image_outlined, color: Colors.black26, size: 32),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  program.title,
-                  style: textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  program.description,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(Icons.star_outline, size: 16, color: colorScheme.primary),
-                    const SizedBox(width: 4),
-                    Text(
-                      '$rating ($learners learners)',
-                      style: textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                        fontWeight: FontWeight.bold,
-                      ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    program.title,
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    program.description,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.star_outline, size: 16, color: colorScheme.primary),
+                      const SizedBox(width: 4),
+                      Text(
+                        '$rating ($learners learners)',
+                        style: textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 }
