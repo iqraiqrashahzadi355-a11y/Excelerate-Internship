@@ -4,8 +4,21 @@ import '../../models/program.dart';
 import '../../routes/app_routes.dart';
 import '../../services/program_repository.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late final Future<List<Program>> _programsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _programsFuture = ProgramRepository().loadPrograms();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +133,7 @@ class HomeScreen extends StatelessWidget {
 
               // Steps 2, 4 & 5: FutureBuilder JSON Integration
               FutureBuilder<List<Program>>(
-                future: ProgramRepository().loadPrograms(),
+                future: _programsFuture,
                 builder: (context, snapshot) {
                   // Step 5: Waiting State (Centered CircularProgressIndicator)
                   if (snapshot.connectionState == ConnectionState.waiting) {
