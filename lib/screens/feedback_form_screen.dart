@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../design_system/design_system.dart';
+import '../routes/app_routes.dart';
+import 'program_listing_screen.dart';
 
 /// ============================================================
 /// FEEDBACK FORM SCREEN — Excelerate Connect
@@ -67,9 +69,6 @@ class _FeedbackFormScreenState extends State<FeedbackFormScreen> {
     if (value == null || value.trim().isEmpty) {
       return 'Please share a comment about the program';
     }
-    if (value.trim().length < 20) {
-      return 'Comment must be at least 20 characters';
-    }
     return null;
   }
 
@@ -87,17 +86,19 @@ class _FeedbackFormScreenState extends State<FeedbackFormScreen> {
     await Future.delayed(const Duration(milliseconds: 700));
     if (!mounted) return;
 
+    final programTitle = _programNameController.text;
+    final programIndex = ProgramListingScreen.programs.indexWhere((p) => p.title == programTitle);
+    if (programIndex != -1) {
+      ProgramListingScreen.programs[programIndex].rating = _rating.toDouble();
+      ProgramListingScreen.programs[programIndex].reviewText = _commentController.text;
+      ProgramListingScreen.programs[programIndex].reviewAuthor = _nameController.text;
+    }
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Thank you for your feedback! 🎉')),
     );
 
-    // Reset the form for a fresh entry, keep the program name.
-    _nameController.clear();
-    _commentController.clear();
-    setState(() {
-      _rating = 0;
-      _ratingTouched = false;
-    });
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.programs, (route) => false);
   }
 
   @override
