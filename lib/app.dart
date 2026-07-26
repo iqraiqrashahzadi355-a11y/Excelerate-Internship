@@ -16,6 +16,7 @@ import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/program_details_screen.dart';
 import 'screens/program_listing_screen.dart';
+import 'screens/feedback_form_screen.dart';
 
 /// Root widget that configures [MaterialApp] with the Excelerate theme,
 /// routes, and behavior.
@@ -41,6 +42,7 @@ class ExcelerateLearningApp extends StatelessWidget {
         AppRoutes.home: (context) => const HomeScreen(),
         AppRoutes.programs: (context) => const ProgramListingScreen(),
         AppRoutes.details: (context) => const ProgramDetailsScreen(),
+        AppRoutes.feedback: (context) => const FeedbackFormScreen(),
       },
     );
   }

@@ -34,12 +34,43 @@ class ProgramDetailsScreen extends StatelessWidget {
             // Hero Image
             ClipRRect(
               borderRadius: ExRadii.borderRadiusLg,
-              child: Image.network(
-                'https://picsum.photos/seed/architecture/800/400',
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child: program?.heroImageUrl.isNotEmpty == true
+                  ? (program!.heroImageUrl.startsWith('http')
+                      ? Image.network(
+                          program.heroImageUrl,
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              height: 200,
+                              width: double.infinity,
+                              color: colorScheme.surface,
+                            );
+                          },
+                          errorBuilder: (_, __, ___) => Container(
+                            height: 200,
+                            width: double.infinity,
+                            color: colorScheme.surface,
+                          ),
+                        )
+                      : Image.asset(
+                          program.heroImageUrl,
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            height: 200,
+                            width: double.infinity,
+                            color: colorScheme.surface,
+                          ),
+                        ))
+                  : Container(
+                      height: 200,
+                      width: double.infinity,
+                      color: colorScheme.surface,
+                    ),
             ),
             const SizedBox(height: ExSpacing.md),
 
@@ -109,21 +140,27 @@ class ProgramDetailsScreen extends StatelessWidget {
                     context,
                     icon: Icons.access_time,
                     title: 'Duration & Schedule',
-                    subtitle: program?.schedule ?? '12 Weeks (4 hours/week)',
+                    subtitle: program != null 
+                        ? '${program.duration} (${program.schedule})'
+                        : '12 Weeks (4 hours/week)',
                   ),
                   const Divider(height: ExSpacing.lg),
                   _buildDetailRow(
                     context,
                     icon: Icons.workspace_premium_outlined,
                     title: 'Certification',
-                    subtitle: 'Industry Recognized Certificate',
+                    subtitle: program?.certification.isNotEmpty == true 
+                        ? program!.certification 
+                        : 'Industry Recognized Certificate',
                   ),
                   const Divider(height: ExSpacing.lg),
                   _buildDetailRow(
                     context,
                     icon: Icons.people_outline,
-                    title: 'Eligibility',
-                    subtitle: program?.eligibility ?? 'Limited to 25 students',
+                    title: 'Cohort Size',
+                    subtitle: program != null
+                        ? 'Limited to ${program.cohortSize} students'
+                        : 'Limited to 25 students',
                   ),
                 ],
               ),
@@ -138,8 +175,10 @@ class ProgramDetailsScreen extends StatelessWidget {
             const SizedBox(height: ExSpacing.md),
             Row(
               children: [
-                const ExAvatar(
-                  initials: 'PN',
+                ExAvatar(
+                  initials: program != null && program.instructorName.isNotEmpty
+                      ? program.instructorName.trim().split(RegExp(' +')).map((s) => s.isNotEmpty ? s[0] : '').take(2).join().toUpperCase()
+                      : 'PN',
                   radius: 28,
                 ),
                 const SizedBox(width: ExSpacing.md),
@@ -148,14 +187,18 @@ class ProgramDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Pranshu Namdeo',
+                        program?.instructorName.isNotEmpty == true 
+                            ? program!.instructorName 
+                            : 'Pranshu Namdeo',
                         style: textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Lead Architect, EcoBuild Inc.',
+                        program?.instructorTitle.isNotEmpty == true 
+                            ? program!.instructorTitle 
+                            : 'Lead Architect, EcoBuild Inc.',
                         style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -186,14 +229,14 @@ class ProgramDetailsScreen extends StatelessWidget {
                       const Icon(Icons.star_half, color: Colors.amber, size: 20),
                       const SizedBox(width: ExSpacing.sm),
                       Text(
-                        '4.8/5',
+                        '${program?.rating ?? 4.8}/5',
                         style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                   const SizedBox(height: ExSpacing.sm),
                   Text(
-                    '"This program completely changed the way I look at building design. The concepts are very practical and easy to apply!"',
+                    '"${program?.reviewText.isNotEmpty == true ? program!.reviewText : 'This program completely changed the way I look at building design. The concepts are very practical and easy to apply!'}"',
                     style: textTheme.bodyMedium?.copyWith(
                       fontStyle: FontStyle.italic,
                       height: 1.4,
@@ -201,7 +244,7 @@ class ProgramDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: ExSpacing.md),
                   Text(
-                    '- Alex Johnson, Architect',
+                    '- ${program?.reviewAuthor.isNotEmpty == true ? program!.reviewAuthor : 'Alex Johnson, Architect'}',
                     style: textTheme.labelMedium?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -230,7 +273,13 @@ class ProgramDetailsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: ExSpacing.sm),
                 ExSecondaryButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/feedback',
+                      arguments: program?.title,
+                    );
+                  },
                   child: const Text('Leave Feedback'),
                 ),
               ],
