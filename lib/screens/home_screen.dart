@@ -3,6 +3,7 @@ import '../../design_system/design_system.dart';
 import '../../models/program.dart';
 import '../../routes/app_routes.dart';
 import '../../services/program_repository.dart';
+import 'program_listing_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -98,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: colorScheme.surfaceContainerHighest,
-                    child: const Icon(Icons.person, color: Colors.grey),
+                    backgroundImage: const NetworkImage(
+                        'https://i.pravatar.cc/150?u=a042581f4e29026704d'),
                   ),
                 ],
               ),
@@ -121,7 +123,41 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 32),
 
-              // Step 6: Popular Programs Header Navigation
+              // Continue Learning Section (Restored!)
+              Text(
+                'Continue Learning',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 200,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    _buildContinueLearningCard(
+                      context,
+                      icon: Icons.code,
+                      program: ProgramListingScreen.programs[0],
+                      progress: 0.75,
+                      progressText: '75% Complete',
+                    ),
+                    const SizedBox(width: 16),
+                    _buildContinueLearningCard(
+                      context,
+                      icon: Icons.design_services,
+                      program: ProgramListingScreen.programs[1],
+                      progress: 0.30,
+                      progressText: '30% Complete',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // Popular Programs Header Navigation
               ExSectionHeader(
                 title: 'Popular Programs',
                 trailingText: 'See all →',
@@ -131,11 +167,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Steps 2, 4 & 5: FutureBuilder JSON Integration
+              // FutureBuilder JSON Integration
               FutureBuilder<List<Program>>(
                 future: _programsFuture,
                 builder: (context, snapshot) {
-                  // Step 5: Waiting State (Centered CircularProgressIndicator)
+                  // Waiting State
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: Padding(
@@ -145,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  // Step 5: Error State (Exact string requirement)
+                  // Error State
                   if (snapshot.hasError) {
                     return const Center(
                       child: Padding(
@@ -158,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  // Step 5: Loaded State (Dynamic ExCard binding)
+                  // Loaded State
                   if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     final programs = snapshot.data!;
 
@@ -166,7 +202,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: programs.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 16),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 16),
                       itemBuilder: (context, index) {
                         final program = programs[index];
 
@@ -214,6 +251,88 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContinueLearningCard(
+    BuildContext context, {
+    required IconData icon,
+    required Program program,
+    required double progress,
+    required String progressText,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, AppRoutes.details, arguments: program);
+      },
+      child: Container(
+        width: 280,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainer,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                  backgroundColor: colorScheme.secondaryContainer,
+                  child: Icon(icon, color: colorScheme.onSecondaryContainer),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: colorScheme.outlineVariant),
+                  ),
+                  child: Text(
+                    progressText,
+                    style: textTheme.labelSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Text(
+              program.title,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              program.description,
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 16),
+            LinearProgressIndicator(
+              value: progress,
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              color: colorScheme.primary,
+              minHeight: 6,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ],
         ),
       ),
     );
