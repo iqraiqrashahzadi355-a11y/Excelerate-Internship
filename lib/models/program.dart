@@ -10,11 +10,11 @@ class Program {
   final int cohortSize;
   final String instructorName;
   final String instructorTitle;
-  final double rating;
-  final String reviewText;
-  final String reviewAuthor;
+  double rating;
+  String reviewText;
+  String reviewAuthor;
 
-  const Program({
+  Program({
     required this.title,
     required this.startDate,
     required this.description,

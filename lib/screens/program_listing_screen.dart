@@ -7,7 +7,7 @@ import '../routes/app_routes.dart';
 class ProgramListingScreen extends StatelessWidget {
   const ProgramListingScreen({super.key});
 
-  static const List<Program> programs = [
+  static List<Program> programs = [
     Program(
       title: 'Flutter Mobile Development',
       startDate: 'August 5, 2026',
