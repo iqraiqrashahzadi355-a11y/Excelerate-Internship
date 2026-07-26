@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../design_system/design_system.dart';
 import '../models/program.dart';
-class ProgramDetailsScreen extends StatelessWidget {
+class ProgramDetailsScreen extends StatefulWidget {
   const ProgramDetailsScreen({super.key});
 
+  @override
+  State<ProgramDetailsScreen> createState() => _ProgramDetailsScreenState();
+}
+
+class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -273,12 +278,15 @@ class ProgramDetailsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: ExSpacing.sm),
                 ExSecondaryButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
                       context,
                       '/feedback',
                       arguments: program?.title,
                     );
+                    if (mounted) {
+                      setState(() {});
+                    }
                   },
                   child: const Text('Leave Feedback'),
                 ),

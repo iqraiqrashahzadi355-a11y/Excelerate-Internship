@@ -98,7 +98,7 @@ class _FeedbackFormScreenState extends State<FeedbackFormScreen> {
       const SnackBar(content: Text('Thank you for your feedback! 🎉')),
     );
 
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.programs, (route) => false);
+    Navigator.pop(context);
   }
 
   @override
