@@ -1,99 +1,28 @@
-# Excelerate Learning Platform
+## Week 3 Updates
 
-## Description
+During Week 3, the application was upgraded from hardcoded program data to a local JSON-based data source.
 
-Excelerate is a Flutter learning platform where learners can discover programs and monitor their learning. It will also provide administrators with tools to manage learners, programs, and announcements.
+### Completed Work
 
-## Week 2 Deliverables
+- Added `assets/data/programs.json` with six program records
+- Added `ProgramRepository.loadPrograms()` to load and decode JSON data
+- Extended the `Program` model with duration, certification, cohort size, instructor, rating and review fields
+- Updated the Home Screen to load programs asynchronously
+- Updated Program Listing with loading, error and retry states
+- Updated Program Details to display the new JSON fields
+- Added a Feedback Form with validation, star rating and success confirmation
+- Connected the Feedback Form to Program Details
+- Preserved navigation between Home, Program Listing and Program Details
 
-- Login Screen
-- Home Screen
-- Program Listing Screen
-- Program Details Screen
-- Working navigation
-- README screenshots
-- Clear Git history
-- Optional demo video
+## Week 3 Pull Requests
 
-## Project Structure
+- PR #9 — Add Week 3 JSON program data service
+- PR #10 — Add Feedback Form screen
+- PR #11 — Add Home Screen JSON integration
+- PR #12 — Add Program Details JSON integration
 
-```text
-lib/
-├── constants/
-│   └── theme.dart
-├── routes/
-│   └── app_routes.dart
-├── screens/
-│   ├── login_screen.dart
-│   ├── home_screen.dart
-│   ├── program_listing_screen.dart
-│   └── program_details_screen.dart
-├── widgets/
-│   └── README.md
-├── models/
-├── services/
-└── main.dart
-```
+## Week 3 Validation
 
-## Navigation Flow
-
-Login → Home → Program Listing → Program Details
-
-## Named Routes
-
-- `/login`
-- `/home`
-- `/programs`
-- `/details`
-
-When the Program model is available, navigate from the program listing to program details with this contract:
-
-```dart
-Navigator.pushNamed(
-  context,
-  AppRoutes.details,
-  arguments: program,
-);
-```
-
-The Program Details screen will retrieve the selected program from `ModalRoute.of(context)!.settings.arguments`.
-
-## How to Run
-
-```shell
-flutter pub get
-flutter run
-```
-
-## Team Responsibilities
-
-- Lords Chilled Life — Team Lead, PDF compilation and submission
-- Iqra Shahzadi — Login Screen
-- Bilal Feroz Khan — Project setup, ThemeData, routes, GitHub integration and README
-- Ibrahim Salman — Home Screen
-- Faith Wahome — Program Listing Screen and Program model
-- Pranshu Namdeo — Program Details Screen, branding and shared component design
-
-## Screenshots
-
-- Login Screen — To be added
-- Home Screen — To be added
-- Program Listing Screen — To be added
-- Program Details Screen — To be added
-
-## Branch Workflow
-
-- `setup/shared-components`
-- `feature/login-screen`
-- `feature/home-screen`
-- `feature/program-listing`
-- `feature/program-details`
-
-Each team member should:
-
-1. Pull the latest `main` branch.
-2. Create or switch to their assigned branch.
-3. Build only their assigned screen.
-4. Commit with a meaningful message.
-5. Push the branch.
-6. Open a pull request into `main`.
+- JSON repository test passed
+- Navigation and JSON loading were manually verified
+- Loading, error and success states were implemented
