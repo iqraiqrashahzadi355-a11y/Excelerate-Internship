@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../design_system/design_system.dart';
+import '../routes/app_routes.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,7 +15,10 @@ class ProfileScreen extends StatelessWidget {
     return ExScaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: ExSpacing.md, vertical: ExSpacing.md),
+          padding: const EdgeInsets.symmetric(
+            horizontal: ExSpacing.md,
+            vertical: ExSpacing.md,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -34,10 +39,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  ExAvatar(
-                    initials: 'PN',
-                    radius: 16,
-                  ),
+                  ExAvatar(initials: 'PN', radius: 16),
                 ],
               ),
               const SizedBox(height: ExSpacing.xl),
@@ -48,7 +50,9 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   const CircleAvatar(
                     radius: 60,
-                    backgroundImage: NetworkImage('https://i.pravatar.cc/150?u=a042581f4e29026704d'),
+                    backgroundImage: NetworkImage(
+                      'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(6),
@@ -73,7 +77,8 @@ class ProfileScreen extends StatelessWidget {
                 style: textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colorScheme.onSurface,
-                  fontFamily: 'serif', // matching the sample image vibe if possible
+                  fontFamily:
+                      'serif', // matching the sample image vibe if possible
                 ),
               ),
               const SizedBox(height: ExSpacing.sm),
@@ -91,7 +96,10 @@ class ProfileScreen extends StatelessWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: colorScheme.error,
                   foregroundColor: colorScheme.onError,
-                  padding: const EdgeInsets.symmetric(horizontal: ExSpacing.xl, vertical: ExSpacing.md),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: ExSpacing.xl,
+                    vertical: ExSpacing.md,
+                  ),
                 ),
                 child: const Text('Edit Profile'),
               ),
@@ -118,7 +126,9 @@ class ProfileScreen extends StatelessWidget {
               // Action List
               Container(
                 decoration: BoxDecoration(
-                  color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                  color: colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.3,
+                  ),
                   borderRadius: BorderRadius.circular(ExRadii.lg),
                 ),
                 child: Column(
@@ -128,19 +138,28 @@ class ProfileScreen extends StatelessWidget {
                       leadingIcon: Icons.emoji_events_outlined,
                       onTap: () {},
                     ),
-                    Divider(height: 1, color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
+                    Divider(
+                      height: 1,
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                    ),
                     ExProfileListTile(
                       title: 'Certificates',
                       leadingIcon: Icons.workspace_premium_outlined,
                       onTap: () {},
                     ),
-                    Divider(height: 1, color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
+                    Divider(
+                      height: 1,
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                    ),
                     ExProfileListTile(
                       title: 'Settings',
                       leadingIcon: Icons.settings_outlined,
                       onTap: () {},
                     ),
-                    Divider(height: 1, color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
+                    Divider(
+                      height: 1,
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                    ),
                     ExProfileListTile(
                       title: 'Support & Feedback',
                       leadingIcon: Icons.help_outline,
@@ -155,16 +174,26 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.login,
+                      (route) => false,
+                    );
+                  },
                   icon: Icon(Icons.logout, color: colorScheme.error),
                   label: Text(
                     'Log Out',
                     style: TextStyle(color: colorScheme.error),
                   ),
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: colorScheme.error.withValues(alpha: 0.5)),
+                    side: BorderSide(
+                      color: colorScheme.error.withValues(alpha: 0.5),
+                    ),
                     padding: const EdgeInsets.symmetric(vertical: ExSpacing.md),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(ExRadii.lg)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(ExRadii.lg),
+                    ),
                   ),
                 ),
               ),
