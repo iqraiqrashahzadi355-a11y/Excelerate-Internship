@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../design_system/design_system.dart';
-import '../../models/program.dart';
-import '../../routes/app_routes.dart';
-import '../../services/program_repository.dart';
+import '../design_system/design_system.dart';
+import '../models/program.dart';
+import '../routes/app_routes.dart';
+import '../services/program_repository.dart';
 import 'program_listing_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final VoidCallback? onSeeAllPrograms;
+
+  const HomeScreen({super.key, this.onSeeAllPrograms});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,7 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.search, color: colorScheme.onSurfaceVariant),
+                          Icon(
+                            Icons.search,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -74,7 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     radius: 20,
                     backgroundColor: colorScheme.surfaceContainerHighest,
                     backgroundImage: const NetworkImage(
-                        'https://i.pravatar.cc/150?u=a042581f4e29026704d'),
+                      'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+                    ),
                   ),
                 ],
               ),
@@ -135,9 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ExSectionHeader(
                 title: 'Popular Programs',
                 trailingText: 'See all →',
-                onTrailingPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.programs);
-                },
+                onTrailingPressed:
+                    widget.onSeeAllPrograms ??
+                    () => Navigator.pushNamed(context, AppRoutes.programs),
               ),
               const SizedBox(height: 16),
 
@@ -235,8 +241,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Icon(icon, color: colorScheme.onSecondaryContainer),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.surface,
                     borderRadius: BorderRadius.circular(16),

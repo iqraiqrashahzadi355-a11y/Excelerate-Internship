@@ -5,6 +5,9 @@ void main() {
   testWidgets('App starts on the login route', (WidgetTester tester) async {
     await tester.pumpWidget(const ExcelerateLearningApp());
 
-    expect(find.text('Login Screen'), findsNWidgets(2));
+    expect(
+      find.text('Welcome back! Please log in to continue.'),
+      findsOneWidget,
+    );
   });
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../tokens/elevations.dart';
@@ -25,7 +24,6 @@ import 'semantic_colors.dart';
 /// )
 /// ```
 
-
 /// Assembles the final [ThemeData] for the Excelerate app.
 ///
 /// Access via [AppTheme.lightTheme] and [AppTheme.darkTheme].
@@ -38,36 +36,43 @@ class AppTheme {
 
   static final FilledButtonThemeData _filledButtonTheme = FilledButtonThemeData(
     style: FilledButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: ExRadii.borderRadiusFull,
+      shape: RoundedRectangleBorder(borderRadius: ExRadii.borderRadiusFull),
+      padding: const EdgeInsets.symmetric(
+        horizontal: ExSpacing.lg,
+        vertical: ExSpacing.md,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: ExSpacing.lg, vertical: ExSpacing.md),
     ),
   );
 
-  static final OutlinedButtonThemeData _outlinedButtonTheme = OutlinedButtonThemeData(
-    style: OutlinedButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: ExRadii.borderRadiusFull,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: ExSpacing.lg, vertical: ExSpacing.md),
-    ),
-  );
+  static final OutlinedButtonThemeData _outlinedButtonTheme =
+      OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: ExRadii.borderRadiusFull),
+          padding: const EdgeInsets.symmetric(
+            horizontal: ExSpacing.lg,
+            vertical: ExSpacing.md,
+          ),
+        ),
+      );
 
-  static const PageTransitionsTheme _pageTransitionsTheme = PageTransitionsTheme(
-    builders: <TargetPlatform, PageTransitionsBuilder>{
-      TargetPlatform.android: ZoomPageTransitionsBuilder(),
-      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
-      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
-    },
-  );
+  static const PageTransitionsTheme _pageTransitionsTheme =
+      PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: ZoomPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+        },
+      );
 
   static final TextButtonThemeData _textButtonTheme = TextButtonThemeData(
     style: TextButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: ExRadii.borderRadiusFull),
-      padding: const EdgeInsets.symmetric(horizontal: ExSpacing.md, vertical: ExSpacing.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: ExSpacing.md,
+        vertical: ExSpacing.sm,
+      ),
     ),
   );
 
@@ -84,28 +89,35 @@ class AppTheme {
     margin: EdgeInsets.zero,
   );
 
-  static final InputDecorationTheme _inputDecorationTheme = const InputDecorationTheme(
-    filled: true,
-    border: UnderlineInputBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(ExRadii.sm),
-        topRight: Radius.circular(ExRadii.sm),
-      ),
-      borderSide: BorderSide.none,
-    ),
-    focusedBorder: UnderlineInputBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(ExRadii.sm),
-        topRight: Radius.circular(ExRadii.sm),
-      ),
-      borderSide: BorderSide(width: 2.0),
-    ),
-    contentPadding: EdgeInsets.symmetric(horizontal: ExSpacing.md, vertical: ExSpacing.md),
-  );
+  static final InputDecorationTheme _inputDecorationTheme =
+      const InputDecorationTheme(
+        filled: true,
+        border: UnderlineInputBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(ExRadii.sm),
+            topRight: Radius.circular(ExRadii.sm),
+          ),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(ExRadii.sm),
+            topRight: Radius.circular(ExRadii.sm),
+          ),
+          borderSide: BorderSide(width: 2.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: ExSpacing.md,
+          vertical: ExSpacing.md,
+        ),
+      );
 
   static final ChipThemeData _chipTheme = ChipThemeData(
     shape: RoundedRectangleBorder(borderRadius: ExRadii.borderRadiusFull),
-    padding: const EdgeInsets.symmetric(horizontal: ExSpacing.md, vertical: ExSpacing.sm),
+    padding: const EdgeInsets.symmetric(
+      horizontal: ExSpacing.md,
+      vertical: ExSpacing.sm,
+    ),
   );
 
   static final SnackBarThemeData _snackBarTheme = SnackBarThemeData(
@@ -117,11 +129,12 @@ class AppTheme {
     shape: RoundedRectangleBorder(borderRadius: ExRadii.borderRadiusXl),
   );
 
-  static final BottomSheetThemeData _bottomSheetTheme = const BottomSheetThemeData(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(ExRadii.xl)),
-    ),
-  );
+  static final BottomSheetThemeData _bottomSheetTheme =
+      const BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(ExRadii.xl)),
+        ),
+      );
 
   static const AppBarTheme _appBarTheme = AppBarTheme(
     centerTitle: false,
@@ -129,14 +142,16 @@ class AppTheme {
     scrolledUnderElevation: ExElevations.level1,
   );
 
-  static const NavigationBarThemeData _navigationBarTheme = NavigationBarThemeData(
-    elevation: ExElevations.level2,
-    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-  );
+  static const NavigationBarThemeData _navigationBarTheme =
+      NavigationBarThemeData(
+        elevation: ExElevations.level2,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      );
 
-  static const ProgressIndicatorThemeData _progressIndicatorTheme = ProgressIndicatorThemeData(
-    // Uses M3 defaults naturally
-  );
+  static const ProgressIndicatorThemeData _progressIndicatorTheme =
+      ProgressIndicatorThemeData(
+        // Uses M3 defaults naturally
+      );
 
   // ──────────────────────────────────────────────────────────────────────────
   // Assembled ThemeData
@@ -162,9 +177,7 @@ class AppTheme {
     progressIndicatorTheme: _progressIndicatorTheme,
     pageTransitionsTheme: _pageTransitionsTheme,
     textTheme: ExTypography.buildTextTheme(),
-    extensions: const [
-      SemanticColors.dark,
-    ],
+    extensions: const [SemanticColors.dark],
   );
 
   /// Complete light theme for the app.
@@ -187,8 +200,6 @@ class AppTheme {
     progressIndicatorTheme: _progressIndicatorTheme,
     pageTransitionsTheme: _pageTransitionsTheme,
     textTheme: ExTypography.buildTextTheme(),
-    extensions: const [
-      SemanticColors.light,
-    ],
+    extensions: const [SemanticColors.light],
   );
 }

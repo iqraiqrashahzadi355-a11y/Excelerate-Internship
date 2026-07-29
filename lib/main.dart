@@ -17,9 +17,9 @@ void main() async {
     if (loadedPrograms.isNotEmpty) {
       ProgramListingScreen.programs = loadedPrograms;
     }
-  } catch (e) {
-    debugPrint('Failed to load programs: $e');
+  } catch (_) {
+    // Keep the bundled fallback list available if the asset cannot be loaded.
   }
-  
+
   runApp(const ExcelerateLearningApp());
 }

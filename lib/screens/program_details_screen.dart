@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../design_system/design_system.dart';
 import '../models/program.dart';
+import '../routes/app_routes.dart';
+
 class ProgramDetailsScreen extends StatefulWidget {
   const ProgramDetailsScreen({super.key});
 
@@ -24,10 +26,7 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.share_outlined),
-            onPressed: () {},
-          ),
+          IconButton(icon: const Icon(Icons.share_outlined), onPressed: () {}),
         ],
         centerTitle: true,
       ),
@@ -41,36 +40,36 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
               borderRadius: ExRadii.borderRadiusLg,
               child: program?.heroImageUrl.isNotEmpty == true
                   ? (program!.heroImageUrl.startsWith('http')
-                      ? Image.network(
-                          program.heroImageUrl,
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Container(
+                        ? Image.network(
+                            program.heroImageUrl,
+                            height: 200,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                height: 200,
+                                width: double.infinity,
+                                color: colorScheme.surface,
+                              );
+                            },
+                            errorBuilder: (_, __, ___) => Container(
                               height: 200,
                               width: double.infinity,
                               color: colorScheme.surface,
-                            );
-                          },
-                          errorBuilder: (_, __, ___) => Container(
+                            ),
+                          )
+                        : Image.asset(
+                            program.heroImageUrl,
                             height: 200,
                             width: double.infinity,
-                            color: colorScheme.surface,
-                          ),
-                        )
-                      : Image.asset(
-                          program.heroImageUrl,
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
-                            height: 200,
-                            width: double.infinity,
-                            color: colorScheme.surface,
-                          ),
-                        ))
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              height: 200,
+                              width: double.infinity,
+                              color: colorScheme.surface,
+                            ),
+                          ))
                   : Container(
                       height: 200,
                       width: double.infinity,
@@ -125,11 +124,11 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
             Text(
               program?.description ??
                   'Dive deep into the principles of eco-friendly building '
-                  'design. This comprehensive program covers modern '
-                  'materials, energy-efficient structures, and integrating '
-                  'natural environments into urban planning. Perfect for '
-                  'professionals looking to elevate their architectural '
-                  'practice with sustainable methodologies.',
+                      'design. This comprehensive program covers modern '
+                      'materials, energy-efficient structures, and integrating '
+                      'natural environments into urban planning. Perfect for '
+                      'professionals looking to elevate their architectural '
+                      'practice with sustainable methodologies.',
               style: textTheme.bodyLarge?.copyWith(
                 color: colorScheme.onSurfaceVariant,
                 height: 1.5,
@@ -145,7 +144,7 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
                     context,
                     icon: Icons.access_time,
                     title: 'Duration & Schedule',
-                    subtitle: program != null 
+                    subtitle: program != null
                         ? '${program.duration} (${program.schedule})'
                         : '12 Weeks (4 hours/week)',
                   ),
@@ -154,8 +153,8 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
                     context,
                     icon: Icons.workspace_premium_outlined,
                     title: 'Certification',
-                    subtitle: program?.certification.isNotEmpty == true 
-                        ? program!.certification 
+                    subtitle: program?.certification.isNotEmpty == true
+                        ? program!.certification
                         : 'Industry Recognized Certificate',
                   ),
                   const Divider(height: ExSpacing.lg),
@@ -175,14 +174,22 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
             // Instructor Section
             Text(
               'Instructor',
-              style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w500),
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: ExSpacing.md),
             Row(
               children: [
                 ExAvatar(
                   initials: program != null && program.instructorName.isNotEmpty
-                      ? program.instructorName.trim().split(RegExp(' +')).map((s) => s.isNotEmpty ? s[0] : '').take(2).join().toUpperCase()
+                      ? program.instructorName
+                            .trim()
+                            .split(RegExp(' +'))
+                            .map((s) => s.isNotEmpty ? s[0] : '')
+                            .take(2)
+                            .join()
+                            .toUpperCase()
                       : 'PN',
                   radius: 28,
                 ),
@@ -192,8 +199,8 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        program?.instructorName.isNotEmpty == true 
-                            ? program!.instructorName 
+                        program?.instructorName.isNotEmpty == true
+                            ? program!.instructorName
                             : 'Pranshu Namdeo',
                         style: textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
@@ -201,8 +208,8 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        program?.instructorTitle.isNotEmpty == true 
-                            ? program!.instructorTitle 
+                        program?.instructorTitle.isNotEmpty == true
+                            ? program!.instructorTitle
                             : 'Lead Architect, EcoBuild Inc.',
                         style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurfaceVariant,
@@ -218,7 +225,9 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
             // Feedback Section
             Text(
               'Student Feedback',
-              style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w500),
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: ExSpacing.md),
             ExCard(
@@ -231,11 +240,17 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
                       const Icon(Icons.star, color: Colors.amber, size: 20),
                       const Icon(Icons.star, color: Colors.amber, size: 20),
                       const Icon(Icons.star, color: Colors.amber, size: 20),
-                      const Icon(Icons.star_half, color: Colors.amber, size: 20),
+                      const Icon(
+                        Icons.star_half,
+                        color: Colors.amber,
+                        size: 20,
+                      ),
                       const SizedBox(width: ExSpacing.sm),
                       Text(
                         '${program?.rating ?? 4.8}/5',
-                        style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                        style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -281,7 +296,7 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
                   onPressed: () async {
                     await Navigator.pushNamed(
                       context,
-                      '/feedback',
+                      AppRoutes.feedback,
                       arguments: program?.title,
                     );
                     if (mounted) {
