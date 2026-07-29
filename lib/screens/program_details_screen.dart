@@ -293,30 +293,6 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
               ],
             ),
           ),
-          BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: 1, // "Programs" selected
-            selectedItemColor: colorScheme.primary,
-            unselectedItemColor: colorScheme.onSurfaceVariant,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.school), // Selected is solid usually, or just use outlined everywhere
-                label: 'Programs',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark_outline),
-                label: 'Saved',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline),
-                label: 'Profile',
-              ),
-            ],
-          ),
         ],
       ),
     );

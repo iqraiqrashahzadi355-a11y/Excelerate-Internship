@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import 'design_system/design_system.dart';
 import 'routes/app_routes.dart';
+import 'screens/dashboard_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/program_details_screen.dart';
@@ -39,6 +40,7 @@ class ExcelerateLearningApp extends StatelessWidget {
       initialRoute: AppRoutes.login,
       routes: {
         AppRoutes.login: (context) => const LoginScreen(),
+        AppRoutes.dashboard: (context) => const DashboardScreen(),
         AppRoutes.home: (context) => const HomeScreen(),
         AppRoutes.programs: (context) => const ProgramListingScreen(),
         AppRoutes.details: (context) => const ProgramDetailsScreen(),
